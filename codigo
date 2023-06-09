@@ -1,0 +1,108 @@
+CREATE SCHEMA IF NOT EXISTS `mybd` DEFAULT CHARACTER SET utf8 ;
+USE `mybd` ;
+
+CREATE TABLE IF NOT EXISTS mybd.Curso (
+  idCurso INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(45) NOT NULL,
+  preco varchar(45) NOT NULL,
+  area VARCHAR(45) NOT NULL,
+  carga_horaria varchar(45) NOT NULL,
+  horario_aulas varchar(45) NOT NULL,
+  valor_mensal varchar(45) NOT NULL,
+  numero_vagas varchar(45) NOT NULL,
+  codigo VARCHAR(45) NOT NULL,
+  UNIQUE INDEX codigo_UNIQUE (codigo ASC),
+  PRIMARY KEY (idCurso));
+ 
+ 
+  CREATE TABLE IF NOT EXISTS mybd.Estudante (
+  idEstudante INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(45) NOT NULL,
+  telefone VARCHAR(14) NOT NULL,
+  Enderecos_idEndereco INT,
+  PRIMARY KEY (idEstudante),
+  UNIQUE INDEX telefone_UNIQUE (telefone ASC),
+  INDEX fk_Estudante_Enderecos_idx (Enderecos_idEndereco ASC) ,
+  CONSTRAINT fk_Estudante_Enderecos
+    FOREIGN KEY (Enderecos_idEndereco)
+    REFERENCES mydb.Endereco (idEndereco)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+   
+   
+   
+    CREATE TABLE IF NOT EXISTS mybd.Instrutor (
+  idinstrutor INT NOT NULL AUTO_INCREMENT,
+  nome varchar(45) not null,
+  cpf VARCHAR(14) NOT NULL,
+  rg VARCHAR(12) NOT NULL,
+  telefone VARCHAR(14) NULL,
+  data_nascimento varchar(10) NOT NULL,
+  dependentes VARCHAR(45) NOT NULL,
+  data_admissao varchar(10) NOT NULL,
+  Enderecos_idEndereco INT,
+  PRIMARY KEY (idcurso),
+  UNIQUE INDEX cpf_UNIQUE (cpf ASC) ,
+  UNIQUE INDEX rg_UNIQUE (rg ASC) ,
+  UNIQUE INDEX telefonte_UNIQUE (telefone ASC),
+  INDEX fk_Instrutor_Endereco1_idx (Endereco_idEndereco ASC) ,
+  CONSTRAINT fk_Instrutor_Endereco1
+    FOREIGN KEY (Endereco_idEndereco)
+    REFERENCES mydb.Endereco (idEndereco)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+
+CREATE TABLE IF NOT EXISTS mybd.diario (
+  Instrutor_idcurso INT NOT NULL AUTO_INCREMENT,
+  Estudante_idEstudante INT NOT NULL,
+  PRIMARY KEY (Instrutor_idcurso, Estudante_idEstudante),
+  INDEX fk_Instrutor_has_Estudante_Estudante1_idx (Estudante_idEstudante ASC) ,
+  INDEX fk_Instrutor_has_Estudante_Instrutor1_idx (Instrutor_idcurso ASC) ,
+  CONSTRAINT fk_Instrutor_has_Estudante_Instrutor1
+    FOREIGN KEY (Instrutor_idcurso)
+    REFERENCES mydb.Instrutor (idcurso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_Instrutor_has_Estudante_Estudante1
+    FOREIGN KEY (Estudante_idEstudante)
+    REFERENCES mydb.Estudante (idEstudante)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+   
+
+  CREATE TABLE IF NOT EXISTS mybd.possui (
+  Curso_idCurso INT NOT NULL ,
+  Instrutor_idcurso INT NOT NULL,
+  PRIMARY KEY (Curso_idCurso, Instrutor_idcurso),
+  INDEX fk_Curso_has_Instrutor_Instrutor1_idx (Instrutor_idcurso ASC) ,
+  INDEX fk_Curso_has_Instrutor_Curso1_idx (Curso_idCurso ASC) ,
+  CONSTRAINT fk_Curso_has_Instrutor_Curso1
+    FOREIGN KEY (Curso_idCurso)
+    REFERENCES mydb.Curso (idCurso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_Curso_has_Instrutor_Instrutor1
+    FOREIGN KEY (Instrutor_idcurso)
+    REFERENCES mydb.Instrutor (idcurso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+   
+   
+    CREATE TABLE IF NOT EXISTS mybd.pertence (
+  Curso_idCurso INT NOT NULL,
+  Estudante_idEstudante INT NOT NULL,
+  PRIMARY KEY (Curso_idCurso, Estudante_idEstudante),
+  INDEX fk_Curso_has_Estudante_Estudante1_idx (Estudante_idEstudante ASC) ,
+  INDEX fk_Curso_has_Estudante_Curso1_idx (Curso_idCurso ASC) ,
+  CONSTRAINT fk_Curso_has_Estudante_Curso1
+    FOREIGN KEY (Curso_idCurso)
+    REFERENCES mydb.Curso (idCurso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_Curso_has_Estudante_Estudante1
+    FOREIGN KEY (Estudante_idEstudante)
+    REFERENCES mydb.Estudante (idEstudante)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);  
